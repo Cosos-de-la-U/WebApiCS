@@ -11,7 +11,7 @@ public class equiposController : ControllerBase
     //Configurar mi variable de conexional dbcontext
     private readonly prestamosContext _context;
 
-    equiposController(prestamosContext context)
+    public equiposController(prestamosContext context)
     {
         _context = context;
     }
@@ -20,6 +20,11 @@ public class equiposController : ControllerBase
     public IActionResult Get()
     {
         IEnumerable<equipos> equiposList = (from e in _context.equipos select e);
-        return Ok(equiposList);
+        if (equiposList.Count() > 0)
+        {
+            return Ok(equiposList);
+        }
+
+        return NotFound();
     }
 }
