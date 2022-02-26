@@ -19,12 +19,23 @@ public class equiposController : ControllerBase
     [Route("api/equipos")]
     public IActionResult Get()
     {
-        IEnumerable<equipos> equiposList = (from e in _context.equipos select e);
+        IEnumerable<equipos> equiposList = (from e in _context.equipos select e).ToList();
         if (equiposList.Count() > 0)
         {
             return Ok(equiposList);
         }
 
         return NotFound();
+    }
+
+    [HttpGet]
+    [Route("api/equipos/{idUsuario}")]
+    public IActionResult Get(int idUsuario)
+    {
+        //Le quitamos Enum porque no va a tener varios registros
+         equipos? unEquipo = (from e in _context.equipos where 
+                                                                e.id_equipos == idUsuario 
+                                                                select e).FirstOrDefault();
+        return (unEquipo != null) ? Ok(unEquipo) : NotFound();
     }
 }
