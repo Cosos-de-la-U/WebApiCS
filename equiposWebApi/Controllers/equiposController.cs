@@ -55,4 +55,22 @@ public class equiposController : ControllerBase
         }
 
     }
+
+    [HttpPut]
+    [Route("api/equipos")]
+    public IActionResult Update([FromBody] equipos updateEquipo)
+    {
+        equipos? equipoExistente = (from e in _context.equipos
+            where e.id_equipos == updateEquipo.id_equipos
+            select e).FirstOrDefault();
+        
+        if (equipoExistente is null) return NotFound();
+        
+        equipoExistente.nombre = updateEquipo.nombre;
+        equipoExistente.descripcion = updateEquipo.descripcion;
+
+        _context.Entry(equipoExistente).State = EntityState.Modified;
+        _context.SaveChanges();
+        return Ok(equipoExistente);
+    }
 }
