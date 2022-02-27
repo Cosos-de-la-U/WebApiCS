@@ -38,4 +38,21 @@ public class equiposController : ControllerBase
                                                                 select e).FirstOrDefault();
         return (unEquipo != null) ? Ok(unEquipo) : NotFound();
     }
+
+    [HttpPost]
+    [Route("api/equipos/")]
+    public IActionResult Post([FromBody]equipos nuevoEquipo)
+    {
+        try
+        {
+            _context.equipos.Add(nuevoEquipo);
+            _context.SaveChanges();
+            return Ok(nuevoEquipo);
+        }
+        catch (Exception e)
+        {
+            return BadRequest();
+        }
+
+    }
 }
